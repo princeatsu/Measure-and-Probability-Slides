@@ -1,0 +1,626 @@
+\documentclass{beamer}
+
+% ========== THEME & PACKAGES ==========
+\usetheme{Madrid}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+% ========== PRESENTATION INFO ==========
+\title[Measure Theory]{Measure and Probability Theory}
+\author{Gabriel Asare Okyere (PhD)}
+\institute[]{Department of Statistics and Actuarial Science, KNUST, Kumasi, Ghana}
+\date{\today}
+
+\setbeamertemplate{navigation symbols}{} % remove navigation icons
+
+% ========== FOOTLINE COLORS ==========
+\setbeamercolor{footline-left}{bg=blue!70!black, fg=white}
+\setbeamercolor{footline-middle}{bg=blue!60!black, fg=white}
+\setbeamercolor{footline-right}{bg=blue!50!black, fg=white}
+
+% ========== CUSTOM FOOTLINE ==========
+\setbeamertemplate{footline}{%
+	\leavevmode%
+	\hbox{%
+		% --- Left: Author / Institution ---
+		\begin{beamercolorbox}[wd=.33\paperwidth,ht=2.5ex,dp=1ex,center]{footline-left}%
+			\textbf{Prof. Okyere (KNUST)}
+		\end{beamercolorbox}%
+		% --- Middle: Course code ---
+		\begin{beamercolorbox}[wd=.33\paperwidth,ht=2.5ex,dp=1ex,center]{footline-middle}%
+			\textbf{STAT 751}
+		\end{beamercolorbox}%
+		% --- Right: Year / Slide number / Logo ---
+		\begin{beamercolorbox}[wd=.34\paperwidth,ht=2.5ex,dp=1ex,right]{footline-right}%
+			\textbf{2026 \hspace{1em} \insertframenumber{} / \inserttotalframenumber}%
+			\hspace{0.5em}%
+			\raisebox{-0.5ex}{\includegraphics[height=0.6cm]{knust_logo.jpeg}}%
+			\hspace{0.5em}%
+		\end{beamercolorbox}%
+	}%
+	\vskip0pt%
+}
+
+% ===== TITLE INFORMATION =====
+\title{STAT 751: Measure and Probability Theory}
+\author{\Huge{Gabriel Asare Okyere (PhD)}}
+
+\institute{\Large{Department of Statistics and Actuarial Science, KNUST.}}
+\date{January 2026}
+
+% ===== DOCUMENT START =====
+\begin{document}
+	\begin{frame}
+		\titlepage
+		
+	\end{frame}
+	
+	\begin{frame}{Learning objectives}
+		\begin{block}{}
+			At the end of this section, learners will be able to:
+			\begin{itemize}
+				\item Define and explain the concepts of measure, measurable spaces, measure spaces, and probability spaces, including their components and properties
+				\item Illustrate classical examples of measures, such as length, area, volume, counting, and probability measures, and apply them to practical scenarios
+				\item Differentiate between finite additivity, $\sigma$-additivity, and $\sigma$-subadditivity, and demonstrate their relationships with examples
+				\item Apply the principles of countable additivity and subadditivity to sequences of sets and prove key properties of measures, including length on bounded intervals
+				\item Analyze and evaluate the extension of simple measures to complex or infinite sets, emphasizing the need for a consistent and general approach in measure theory
+			\end{itemize}
+		\end{block}
+	\end{frame}
+
+
+\begin{frame}{MEASURE}
+	\centering
+	\Large WHAT IS MEASURE AND WHY MEASURE?
+\end{frame}
+
+
+\begin{frame}{Why measure?}
+	
+	In mathematics, we often ask questions like:
+	\begin{itemize}
+		\item how long is this set?
+		\item how large is this region?
+		\item what is the chance that an event happens?
+	\end{itemize}
+	\vspace{0.5cm}
+	All these questions involve measure; long (length), large (area), chance (probability), amount (volume), etc. \\ \vspace{0.25cm}
+	To answer these questions, we need a systematic way to assign numbers to sets.
+	
+	
+\end{frame}
+
+
+\begin{frame}{The problem with ``size''}
+	
+	For simple sets, ``size'' is easy.
+	
+	\vspace{0.3cm}
+	
+	Examples:
+	\begin{itemize}
+		\item the length of an interval $(a,b)$ is $b-a$
+		\item the number of elements in a finite set is easy to count
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	But it is not simple for many sets.
+	
+	\vspace{0.3cm}
+	
+	Examples:
+	\begin{itemize}
+		\item unions of many intervals
+		\item infinite sets
+		\item complicated events in probability
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	We need a more general idea of size.
+	
+\end{frame}
+
+
+\begin{frame}{Nice Practical Examples}
+	
+	Now take two intervals that do not overlap.
+	
+	\vspace{0.3cm}
+	
+	\[
+	A = (1,2), \qquad B = (3,5)
+	\]
+	
+	Their lengths are:
+	\begin{itemize}
+		\item $\text{length}(A) = 1$
+		\item $\text{length}(B) = 2$
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	The total length of $A \cup B$ is
+	\[
+	1 + 2 = 3
+	\]
+	
+	So far, everything works nicely.
+	
+\end{frame}
+
+
+\begin{frame}{Nice Practical Examples}
+	\textbf{Half-open interval example:}
+	
+	\[
+	C = [0,1), \qquad D = [1,3)
+	\]
+	
+	Lengths:
+	\begin{itemize}
+		\item $\text{length}(C) = 1$
+		\item $\text{length}(D) = 2$
+	\end{itemize}
+	
+	The total length of $C \cup D$ is
+	\[
+	1 + 2 = 3
+	\]
+	
+	Even with half-open intervals, the additivity of length works as expected.
+	
+\end{frame}
+
+
+\begin{frame}{Limitations of basic ideas}
+	
+	Length works well for single intervals,  
+	but what about:
+	\begin{itemize}
+		\item a countable union of intervals?
+		\item sets with infinitely many pieces?
+		\item random events formed from many outcomes?
+	\end{itemize}
+	
+	Basic formulas are not enough.
+	
+	\vspace{0.3cm}
+	
+	So we need a rule that:
+	\begin{itemize}
+		\item works for simple sets
+		\item extends to complicated sets
+		\item behaves consistently
+	\end{itemize}
+	
+\end{frame}
+
+
+\begin{frame}{From size to measure}
+	
+	A measure is a mathematical tool that:
+	\begin{itemize}
+		\item assigns a size to sets
+		\item works for very general sets
+		\item satisfies the natural properties we expect
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	Length, area, volume, and probability are all special cases of measures.
+	
+	\vspace{0.3cm}
+	
+	This motivates the formal definition of a measure.
+	
+\end{frame}
+
+\begin{frame}{Measure}
+	\begin{block}{Definition of Measure}
+		Let $\Omega$ be a set and $\mathcal{F}$ a collection of subsets of $\Omega$ (called a \(\sigma\)-algebra).  
+		
+		A function \(\mu: \mathcal{F} \to [0, \infty]\) is called a \textbf{measure} if it satisfies:
+		
+		\vspace{0.15cm}
+		
+		\begin{itemize}
+			\item \(\mu(\emptyset) = 0\)
+			\item \textbf{Countable additivity:} for any countable collection \(\{A_1, A_2, A_3, \dots\}\) of disjoint sets in \(\mathcal{F}\),
+			\[
+			\mu\Big(\bigcup_i A_i\Big) = \sum_i \mu(A_i)
+			\]
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}{Measure}
+	\begin{block}{Remarks}
+		\begin{itemize}
+			\item $\mu$ assigns a non-negative extended real number (can be $\infty$) to each measurable set.
+			\item The $\sigma$-algebra $\mathcal{F}$ ensures that unions, intersections, and complements of sets are measurable.
+			\item Countable additivity is stronger than finite additivity; it works for infinitely many disjoint sets.
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}{Probability Measure}
+	
+	A probability measure $P$ is a measure on a $\sigma$-algebra $\mathcal{F}$ of $\Omega$ such that:
+	
+	\vspace{0.3cm}
+	
+	\begin{itemize}
+		\item $P(A) \ge 0$ for all $A \in \mathcal{F}$
+		\item $P(\Omega) = 1$
+		\item For any countable collection $\{A_1, A_2, \dots\}$ of disjoint events in $\mathcal{F}$,
+		\[
+		P\Big(\bigcup_i A_i\Big) = \sum_i P(A_i)
+		\]
+	\end{itemize}
+	
+\end{frame}
+
+
+
+\begin{frame}{Measure Space}
+	\begin{block}{Definition of Measure Space}	
+	A measure space is an ordered triple $(\Omega, \mathcal{F}, \mu)$ where:
+	
+	\vspace{0.3cm}
+	
+	\begin{itemize}
+		\item $\Omega$ is a set, called the sample space.
+		\item $\mathcal{F}$ is a $\sigma$-algebra of subsets of $\Omega$, 
+		\item $\mu: \mathcal{F} \to [0, \infty]$ is a measure, i.e., a functional satisfying:
+		\begin{itemize}
+			\item $\mu(\emptyset) = 0$
+			\item Countable additivity: for any countable collection $\{A_1, A_2, \dots\}$ of disjoint sets in $\mathcal{F}$,
+			\[
+			\mu\Big(\bigcup_{i=1}^{\infty} A_i\Big) = \sum_{i=1}^{\infty} \mu(A_i)
+			\]
+		\end{itemize}
+	\end{itemize}
+	\end{block}
+\end{frame}
+
+
+\begin{frame}{Measurable Space}
+	\begin{block}{Definition of Measurable Space}
+		A \textbf{measurable space} is an ordered pair $(\Omega, \mathcal{F})$ where:
+		
+		\vspace{0.3cm}
+		
+		\begin{itemize}
+			\item $\Omega$ is a set, called the sample space.
+			\item $\mathcal{F}$ is a $\sigma$-algebra of subsets of $\Omega$
+			
+		\end{itemize}
+		
+		\vspace{0.3cm}
+		
+	\end{block}
+	
+\end{frame}
+
+
+
+\begin{frame}{Probability Space}
+	\begin{block}{Definition of Probability Space}
+		A probability space is a triple $(\Omega, \mathcal{F}, P)$ where:
+		
+		\begin{itemize}
+			\item $\Omega$ is the sample space (all possible outcomes)
+			\item $\mathcal{F}$ is a $\sigma$-algebra of subsets of $\Omega$ (the events)
+			\item $P$ is a probability measure
+		\end{itemize}
+	\end{block}
+	
+\end{frame}
+
+
+\begin{frame}{Properties of a Measure}
+	
+	Let $(\Omega,\mathcal{F},\mu)$ be a measure space.
+	
+	\begin{enumerate}
+		\item \textbf{Non-negativity:}
+		\[
+		\mu(A) \ge 0 \quad \text{for all } A \in \mathcal{F}.
+		\]
+		
+		\item \textbf{Null empty set:}
+		\[
+		\mu(\emptyset) = 0.
+		\]
+		
+		\item \textbf{Countable additivity (sigma-additivity):}  
+		If $\{A_n\}_{n=1}^\infty \subseteq \mathcal{F}$ are pairwise disjoint, then
+		\[
+		\mu\!\left(\bigcup_{n=1}^\infty A_n\right)
+		=
+		\sum_{n=1}^\infty \mu(A_n).
+		\]
+		
+		\item \textbf{Finite additivity:}  
+		If $A,B \in \mathcal{F}$ and $A \cap B = \emptyset$, then
+		\[
+		\mu(A \cup B) = \mu(A) + \mu(B).
+		\]
+		
+		\item \textbf{Monotonicity:}  
+		If $A \subseteq B$, then
+		\[
+		\mu(A) \le \mu(B).
+		\]
+	\end{enumerate}
+	
+\end{frame}
+
+
+\begin{frame}{Properties of a Measure (cont.)}
+	
+	\setcounter{enumi}{5}
+	
+	\begin{enumerate}
+		\item \textbf{Continuity from below:}  
+		If $A_1 \subseteq A_2 \subseteq \cdots$ and
+		\[
+		A = \bigcup_{n=1}^\infty A_n,
+		\]
+		then
+		\[
+		\mu(A) = \lim_{n\to\infty} \mu(A_n).
+		\]
+		
+		\item \textbf{Continuity from above:}  
+		If $A_1 \supseteq A_2 \supseteq \cdots$, $\mu(A_1) < \infty$, and
+		\[
+		A = \bigcap_{n=1}^\infty A_n,
+		\]
+		then
+		\[
+		\mu(A) = \lim_{n\to\infty} \mu(A_n).
+		\]
+		
+		\item \textbf{Inclusion--exclusion (two sets):}
+		\[
+		\mu(A \cup B) = \mu(A) + \mu(B) - \mu(A \cap B).
+		\]
+	\end{enumerate}
+	
+\end{frame}
+
+
+\begin{frame}{Practical Examples of Measures}
+	
+	\textbf{Length measure on $\mathbb{R}$:}  $\mu((a,b)) = b - a$\\
+	\[
+	\text{Example: } \mu([2,5]) = 5-2 = 3
+	\]
+	
+	
+	\textbf{Counting measure on any set $\Omega$: } $ \mu(A) = \text{number of elements in set } A$
+	\[
+	\mu(\{x, y, z\}) = 3
+	\]
+	
+	\textbf{Probability measure on a probability space $(\Omega, \mathcal{F}, P)$:} \\
+	Let the event of rolling an even number be, $A = \{2, 4, 6\}.$ \\
+	Since each event $A_i$ of $\Omega$ has a probability of $\frac{1}{6}.$ \\
+	It is easy to prove that\\
+	
+	\vspace{0.15cm}
+	
+	\begin{itemize}
+		\item $P(\Omega) = P(\{1\}) + P(\{2\}) + \cdots + P(\{6\}) = 1$
+		
+		\vspace{0.15cm}
+		\item $P(A_1 \cup A_2 \cup A_3) = P(A) = \frac{1}{6} + \frac{1}{6} + \frac{1}{6} = \frac{3}{6} = \frac{1}{2}$
+		
+	\end{itemize}	
+\end{frame}
+
+
+\begin{frame}{Classical Measures}
+	\begin{block}{Lengths in $\mathbb{R}$}
+		Length in $\mathbb{R}$: For any interval $I \in \mathbb{R}$ bounded by the endpoints $a,b$ , its length is given as \\ $\ell(I)$ = $|b-a|$.
+		\vspace{1cm}
+		\begin{exampleblock}{Additivity property of length}
+			If an interval $I$ is a disjoint union of a finite family $\{I_k\}_{k=1}^{n}$ of intervals, then  $\ell(I) = \sum_{k=1}^{n} \ell(I_k)$.
+		\end{exampleblock}
+		
+		
+	\end{block}
+\end{frame}
+
+\begin{frame}{Classical examples of Measure}
+	\begin{block}{Areas in $\mathbb{R}^2$}
+		Given that $I, J$ are the intervals (or lengths) of any rectangle $A$, then \\ area$(A) = \ell(I)\ell(J)$.
+		\vspace{1cm}
+		\begin{exampleblock}{Additive property of Area}
+			If $A$ is a rectangle of disjoint union of a finite family of rectangles $A_1, A_2, \dots, A_n$, then area$(A) = \sum_{k=1}^{n}$ area$(A_k)$.
+		\end{exampleblock}
+	\end{block}
+\end{frame}
+
+\begin{frame}{Classical examples of Measure}
+	\begin{block}{Volumes in $\mathbb{R}^3$}
+		Any box in $\mathbb{R}^3$ of the form $A=I$x$J$x$K$, where $I, J, K$ are intervals in $\mathbb{R}$, will yield the set vol$(A) = \ell(I) \ell(J) \ell(K)$.
+		\begin{itemize}
+			\item The additive property of volume follows similarly.
+		\end{itemize}
+		
+	\end{block}
+	\vspace{1cm}
+	\begin{block}{Probability}
+		If the event $A \subset \Omega$, and $A$ is a disjoint union of a finite sequence of events $A_1, \dots, A_n$, then $\mathbb{P}(A) = \sum_{k=1}^{n} \mathbb{P}(A_k)$.
+		
+	\end{block}
+\end{frame}
+
+\begin{frame}{}
+	
+	\begin{exampleblock}{Note these similarities}
+		All the above had the following.
+		\begin{itemize}
+			\item A non-empty set $\Omega$ (i.e. $\mathbb{R}, \mathbb{R}^2, \mathbb{R}^3, \Omega)$.
+			\item A family of subsets $S$ (i.e. intervals, rectangles, boxes, events).
+			\item A functional $\mu: S \to \mathbb{R}_+ :=[0,+\infty)$ (length, area, etc.) with the following property:
+			\begin{itemize}
+				\item if $A \in S$ is a dsijoint union of a finite family $\{A_k\}_{k=1}^{n}$ of sets from $S$, then $\mu(A) = \sum_{k=1}^{n} \mu(A_k)$.
+			\end{itemize}
+		\end{itemize}
+	\end{exampleblock}
+\end{frame}
+
+
+\begin{frame}{Lebesgue Measures}
+	
+	\begin{itemize}
+		\item \textbf{Length:} Lebesgue measure on $\mathbb{R}$ (1-dimensional)
+		\item \textbf{Area:} Lebesgue measure on $\mathbb{R}^2$ (2-dimensional)
+		\item \textbf{Volume:} Lebesgue measure on $\mathbb{R}^3$ (3-dimensional)
+		\item \textbf{Probability:} Lebesgue measure on a probability space assigns probabilities to events (for continuous spaces)
+	\end{itemize}
+	
+	\vspace{0.5cm}
+	All of the above are examples of Lebesgue measures in different contexts. They generalize the concept of “size” — whether length, area, volume, or probability — in a mathematically rigorous way that works even for very irregular sets.
+	
+\end{frame}
+
+
+\begin{frame}{$\sigma$-additive measures}
+	Let $\Omega$ be a non-empty set and $S$ be a family of subsets of $\Omega$. 
+	\begin{block}{Definition of $\sigma$-additive measures}
+		A functional $\mu: S \to \mathbb{R}_+$ is called a \textbf{$\sigma$-additive measure} if whenever
+		\begin{itemize}
+			\item a set $A \in S$ is a disjoint union of an at most countable sequence $\{A_k\}_{k=1}^{N}$ (where $N$ is either finite or $N = \infty$), then
+			\item $\mu(A) = \sum_{k=1}^{N} \mu(A_k)$.
+		\end{itemize}
+	\end{block}
+	
+	\begin{block}{Remark}
+		\begin{itemize}
+			\item $\mu$ is a \textit{finitely additive measure} if this property holds for finite values of $N$.
+			\item Every $\sigma$-additive measure is finitely additive, but the converse is not true.
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+
+\begin{frame}{Proof that $\sigma$-additivity $\implies$ finite additivity}	
+	Let $\mu$ be a $\sigma$-additive measure on a $\sigma$-algebra $\mathcal{F}$.  
+	
+	Take any two disjoint sets $A, B \in \mathcal{F}$.  
+	
+	Consider the countable sequence
+	\[
+	A_1 = A, \quad A_2 = B, \quad A_3 = \emptyset, \quad A_4 = \emptyset, \dots
+	\]
+	
+	Since the sets are disjoint, $\sigma$-additivity gives:
+	\[
+	\mu\Big(\bigcup_{n=1}^{\infty} A_n\Big) = \sum_{n=1}^{\infty} \mu(A_n).
+	\]
+	
+	The left-hand side is
+	\[
+	\mu(A \cup B),
+	\]
+	and the right-hand side is
+	\[
+	\mu(A) + \mu(B) + 0 + 0 + \dots = \mu(A) + \mu(B).
+	\]
+	
+	Hence,
+	\[
+	\mu(A \cup B) = \mu(A) + \mu(B),
+	\]
+	which is exactly finite additivity.
+	
+	Therefore, $\sigma$-additivity automatically implies finite additivity.
+	
+\end{frame}
+
+
+\begin{frame}{$\sigma$-additive measure}
+	\begin{block}{Theorem }
+		The length is a $\sigma$-additive measure on the family of all bounded intervals in $\mathbb{R}$. 
+	\end{block}
+\end{frame}
+
+
+
+\begin{frame}{$\sigma$-subadditive measures}
+	\begin{block}{Definition}
+		A functional $\mu: \mathcal{S} \to \mathbb{R}_+$ is called $\sigma$-subadditive if whenever $A \subset \displaystyle \bigcup_{k=1}^{N} A_k$ where $A$ and $A_k$ are all elements of $\mathcal{S}$ and $N$ is either finite or infinite, \\
+		$\mu(A) \leq \displaystyle \sum_{k=1}^{N} \mu(A_k)$.
+		
+		\begin{alertblock}{Note}
+			If this property holds for finite values of $N$, then $\mu$ is called finitely subadditive.
+		\end{alertblock}
+	\end{block}
+\end{frame}
+
+\begin{frame}{Lemma }
+	\begin{block}{}
+		\begin{center}
+			The \textit{length} is $\sigma$-subadditive.
+		\end{center}
+	\end{block}
+\end{frame}
+
+\begin{frame}{Proof}
+	Let $I$, $\{I_k\}_{k=1}^{\infty}$ be intervals such that $I \subset \cup_{k=1}^{\infty} I_k$, we want to prove that \\
+	$\ell(I) \leq \displaystyle \sum_{k=1}^{\infty} \ell(I_k)$.\\ \vspace{0.15cm}
+	Let us fix some $\varepsilon > 0$ and choose a bounded closed interval $I' \subset I$ such that
+	$\ell(I) \leq \ell(I')$ + $\varepsilon$.\\ \vspace{0.15cm}
+	For any $k$, choose an open interval $I_{k}^{'} \supset I_k$ such that \\ $\ell(I'_k) \leq \ell(I_k)$ + $\frac{\varepsilon}{2^k}$.\\ \vspace{0.15cm}
+	Then the bounded closed interval $I'$ is covered by a sequence $\{I'_k\}$ of open intervals. There is a finite subfamily $\{I'_{k_j}\}_{j=1}^{n}$ that also covers $I'$. 
+	
+\end{frame}
+
+\begin{frame}{Proof}
+	It follows from the finite additivity of length that it is finitely subadditive. That is, 
+	\[
+	\ell(I') \leq \sum_{j} \ell(I'_{k_j}) \implies 
+	\ell(I') \leq \sum_{k=1}^{\infty} \ell(I'_k).
+	\]
+	
+	This yields 
+	\[
+	\ell(I) \leq \varepsilon + \sum_{k=1}^{\infty}\left(\ell(I_k) + \frac{\varepsilon}{2^k}\right) 
+	= 2\varepsilon + \sum_{k=1}^{\infty} \ell(I_k).
+	\]
+	
+	Since $\varepsilon > 0$ is arbitrary, letting $\varepsilon \to 0$ finishes the proof. $\square$
+\end{frame}
+
+
+\begin{frame}{Theorem}
+	\begin{block}{}
+		The length is a $\sigma$-additive measure on the family of all bounded intervals in $\mathbb{R}$.
+	\end{block}
+\end{frame}
+
+\begin{frame}{Proof}
+	We need to prove that if
+	$I = \displaystyle \bigsqcup_{k=1}^{\infty} I_k$, then $\ell(I) = \sum_{k=1}^{\infty} \ell(I_k)$.\\
+	By the $\sigma$-subadditive lemma, we have $\ell(I) \leq \displaystyle \sum_{k=1}^{\infty} \ell(I_k)$, so we need to prove the opposite inequality. \\
+	For a fixed $n \in \mathbb{N}$, we have \\ 
+	$I \supset \displaystyle \bigsqcup_{k=1}^{n} I_k$.\\
+	It follows from the finite additivity of length that \\
+	$\ell(I) \ge \displaystyle \sum_{k=1}^{n} \ell(I_k)$.
+\end{frame}
+
+\begin{frame}{Proof}
+	Letting $n \to \infty$, we obtain \\
+	$\ell(I) \ge \displaystyle \sum_{k=1}^{\infty} \ell(I_k)$\\
+	which finishes the proof.
+\end{frame}
+
+\end{document}
