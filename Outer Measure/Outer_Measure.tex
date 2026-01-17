@@ -1,0 +1,680 @@
+\documentclass{beamer}
+
+% ========== THEME & PACKAGES ==========
+\usetheme{Madrid}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+% ========== PRESENTATION INFO ==========
+\title[Measure Theory]{Probability and Measure Theory}
+\author{Gabriel Asare Okyere (PhD)}
+\institute[]{Department of Statistics and Actuarial Science, KNUST, Kumasi, Ghana}
+\date{\today}
+
+\setbeamertemplate{navigation symbols}{} % remove navigation icons
+
+% ========== FOOTLINE COLORS ==========
+\setbeamercolor{footline-left}{bg=blue!70!black, fg=white}
+\setbeamercolor{footline-middle}{bg=blue!60!black, fg=white}
+\setbeamercolor{footline-right}{bg=blue!50!black, fg=white}
+
+% ========== CUSTOM FOOTLINE ==========
+\setbeamertemplate{footline}{%
+	\leavevmode%
+	\hbox{%
+		% --- Left: Author / Institution ---
+		\begin{beamercolorbox}[wd=.33\paperwidth,ht=2.5ex,dp=1ex,center]{footline-left}%
+			\textbf{Prof. Okyere (KNUST)}
+		\end{beamercolorbox}%
+		% --- Middle: Course code ---
+		\begin{beamercolorbox}[wd=.33\paperwidth,ht=2.5ex,dp=1ex,center]{footline-middle}%
+			\textbf{MSTAT 551}
+		\end{beamercolorbox}%
+		% --- Right: Year / Slide number / Logo ---
+		\begin{beamercolorbox}[wd=.34\paperwidth,ht=2.5ex,dp=1ex,right]{footline-right}%
+			\textbf{2026 \hspace{1em} \insertframenumber{} / \inserttotalframenumber}%
+			\hspace{0.5em}%
+			\raisebox{-0.5ex}{\includegraphics[height=0.6cm]{knust_logo.jpeg}}%
+			\hspace{0.5em}%
+		\end{beamercolorbox}%
+	}%
+	\vskip0pt%
+}
+
+% ===== TITLE INFORMATION =====
+\title{MSTAT 551: Probability and Measure Theory}
+\author{\Huge{Gabriel Asare Okyere (PhD)}}
+
+\institute{\Large{Department of Statistics and Actuarial Science, KNUST.}}
+\date{January 2026}
+
+% ===== DOCUMENT START =====
+\begin{document}
+	\begin{frame}
+		\titlepage
+		
+	\end{frame}
+	
+	\begin{frame}{Learning objectives}
+		\begin{block}{}
+			At the end of this section, learners will be able to:
+			
+		\end{block}
+	\end{frame}
+
+
+\begin{frame}{Outer Measure}
+	Suppose you want to assign a ‘length’ to a very complicated set of points on a line, like a set that is infinite or scattered irregularly. How could you systematically estimate its size using only intervals?
+	
+	\centering
+	\includegraphics[width=0.6\textwidth]{Difficult.jpg}
+\end{frame}
+
+
+\begin{frame}{Motivation for Outer Measure}
+	\begin{block}{1. Measuring Beyond Simple Sets}
+
+		We know how to measure intervals in $\mathbb{R}$ or rectangles in $\mathbb{R}^n$, but many sets are more complicated. \\[0.3cm]
+		
+		\textbf{Example:} \\
+		Let 
+		\[
+		A = \{0\} \cup \{1/2\} \cup \{2/3\} \cup \dots \subset \mathbb{R}
+		\]
+		which is not a single interval. \\[0.2cm]
+		
+		\textbf{Idea:} \\
+		Outer measure allows us to assign a “length” by covering each point with a very small interval and summing their lengths.
+	\end{block}
+\end{frame}
+
+	
+	\begin{frame}{Motivation for Outer Measure}
+		\begin{block}{2. Approximation from the Outside}
+
+		Outer measure measures a set by covering it with countably many simple sets and taking the smallest total size. \\[0.3cm]
+		
+		\textbf{Example:} \\
+		The Cantor set in $[0,1]$ is not a union of intervals. \\[0.2cm]
+		
+		\textbf{Idea:} \\
+		We cover it with a sequence of intervals whose total length can be made arbitrarily small. \\
+		Outer measure gives the \emph{infimum} of these total lengths, matching our geometric intuition.
+	\end{block}
+	\end{frame}
+	
+	\begin{frame}{Motivation for Outer Measure}
+		\begin{block}{3. Defining Lebesgue Measure Rigorously}
+
+		Outer measure is the first step in constructing Lebesgue measure. \\[0.3cm]
+		
+		\textbf{Example / Idea:}
+		\begin{enumerate}
+			\item Start with outer measure $m^*$ defined on all subsets of $\mathbb{R}$ using intervals
+			\item Identify sets where \(\sigma\)-additivity holds (measurable sets)
+			\item Restrict $m^*$ to these sets to get the Lebesgue measure
+		\end{enumerate}
+	\end{block}
+	\end{frame}
+
+
+\begin{frame}{Outer Measure}
+	Let $\Omega$ be a set and $\mathcal{A}$ be an algebra of sets of $\Omega$. Suppose $\mu$ is a $\sigma$-additive measure on $\mathcal{A}$. From the algebra property: if $A \in \mathcal{A}$, then $A^c := \Omega \setminus A \in \mathcal{A}$.
+	
+	\begin{block}{Definition}
+		For any set $A \subset \Omega$, define its outer measure $\mu^*(A)$ by: \\
+		$\mu^*(A) =$ inf $\Bigg \{\displaystyle \sum_{k=1}^{\infty} \mu(A_k) : A_k \in \mathcal{A}$ and $A \subset \displaystyle \bigcup_{k=1}^{\infty} A_k \Bigg \}$ $\dots \dots \dots \dots (1.7)$
+		\label{eq:energy}
+	\end{block}
+
+	\begin{block}{}
+		In other words, we consider all coverings $\{A_k\}_{k=1}^{\infty}$ of $A$ by a sequence from the algebra $\mathcal{A}$ and define $\mu^*(A)$ as the infimum of the sum of all $\mu(A_k)$, taken over all such coverings. 
+	\end{block}
+\end{frame}
+
+
+\begin{frame}{Outer Measure}
+	\begin{block}{Properties of outer measure}
+		\begin{itemize}
+			\item Null (empty) set: $\mu^*(\emptyset) = 0$
+			\item Monotonicity: if $A \subset B \subset \Omega$, then $\mu^*(A) \leq \mu^*(B)$.
+			\item Countable subadditivity ($\sigma$-subadditivity): For any countable collection of sets $\{A_n\}_{n=1}^{\infty} \subset \Omega$:\\
+			$\mu^* \Bigg (\displaystyle \bigcup_{n=1}^{\infty} A_n \Bigg) \leq \displaystyle \sum_{n=1}^{\infty} \mu^*(A_n)$.
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}{Outer measure}
+	\begin{block}{Lemma}
+		For any set $A \subset \Omega$, $\mu^*(A) < \infty$ and if $A \in \mathcal{A}$, then $\mu^*(A) = \mu(A)$.
+	\end{block}
+\end{frame}
+
+\begin{frame}{Outer measure}
+	\begin{block}{Proof}
+		Note that $\emptyset \in \mathcal{A}$ and $\mu(\emptyset) = 0$ because $\mu(\emptyset) = \mu(\emptyset \sqcup \emptyset) = \mu(\emptyset) + \mu(\emptyset)$. \\
+		
+		\vspace{0.3cm}
+		For any set $A \subset \Omega$, consider a covering $\{A_k\} = \{\Omega, \emptyset, \emptyset, \dots\}$ of $A$. \\
+		\vspace{0.3cm}
+		Since $\Omega, \emptyset \in \mathcal{A}$, it follows from (1) that \\ \vspace{0.2cm}
+		$\mu^*(A) \le \mu(\Omega) + \mu(\emptyset) + \mu(\emptyset) + \dots = \mu(\Omega) < \infty$. \\
+		
+		\vspace{0.3cm}
+		Assume now $A \in \mathcal{A}$. Considering a covering $\{A_k\} = \{A, \emptyset, \emptyset, \dots\}$ \\ 
+		\vspace{0.3cm}
+		and using that $A, \emptyset \in \mathcal{A}$, we obtain in the same way that \\ 
+		\vspace{0.3cm}
+		$\mu^*(A) \le \mu(A) + \mu(\emptyset) + \mu(\emptyset) + \dots = \mu(A)$. \\
+		
+	\end{block}
+\end{frame}
+
+\begin{frame}{Outer measure}
+	\begin{block}{Continuation of Proof}
+		On the other hand, for any sequence $\{A_k\}$ as in (1), we have by the \\
+		\vspace{0.3cm}
+		$\sigma$-subadditivity of $\mu$ that \\
+		\vspace{0.3cm}
+		$\sum_{k=1}^{\infty} \mu(A) \le \sum_{k=1}^{\infty} \mu(A_k)$. \\
+		
+		\vspace{0.3cm}
+		Taking the infimum over all such sequences $\{A_k\}$, we obtain \\
+		\vspace{0.3cm}
+		$\mu(A) \le \mu^*(A)$, which together with the previous inequality yields \\
+		\vspace{0.3cm}
+		$\mu^*(A) = \mu(A)$. $\blacksquare$
+	\end{block}    
+\end{frame}
+
+\begin{frame}{Outer measure}
+	\begin{block}{Lemma}
+		The outer measure $\mu^*$ is $\sigma$-subadditive on $2^\Omega$.
+	\end{block}
+\end{frame}
+
+\begin{frame}{Outer measure}
+	\begin{block}{Proof}
+		We need to prove that if  
+		$A \subset \bigcup_{k=1}^{\infty} A_k$ where
+		$A$ and $A_k$ are subsets of $\Omega$, \\ \vspace{0.3cm}
+		then $\mu^*(A) \le \sum_{k=1}^{\infty} \mu^*(A_k)$.\\ 
+		\vspace{0.3cm}
+		By the definition of $\mu^*$, for any set $A_k$ and any $\varepsilon > 0$ \\ \vspace{0.3cm}
+		there exists a sequence $\{A_{k n}\}_{n=1}^{\infty}$ of sets from $R$ such that \\ \vspace{0.3cm}
+		$A_k \subset \bigcup_{n=1}^{\infty} A_{k n}$ and $\mu^*(A_k) \ge \sum_{n=1}^{\infty} \mu(A_{k n}) - \frac{\varepsilon}{2^k}$. \\ \vspace{0.3cm}
+		Adding these inequalities over all $k$, we obtain \\ \vspace{0.3cm} 
+		$\sum_{k=1}^{\infty} \mu^*(A_k) \ge \sum_{k,n=1}^{\infty} \mu(A_{k n}) - \varepsilon$.
+		
+		
+	\end{block}
+\end{frame}
+
+\begin{frame}{Outer measure}
+	\begin{block}{Continuation of proof}
+		On the other hand, by the inclusions $A \subset \bigcup_{k=1}^{\infty} A_k$ and $A_k \subset \bigcup_{n=1}^{\infty} A_{k n}$, \\
+		\vspace{0.3cm}
+		we get $A \subset \bigcup_{k,n=1}^{\infty} A_{k n}$. Since $A_{k n} \in \mathcal{A}$, it follows from (1) that \\ \vspace{0.3cm}
+		$\mu^*(A) \le \sum_{k,n=1}^{\infty} \mu(A_{k n})$. \\
+		\vspace{0.3cm}
+		Comparing with the previous inequality gives \\
+		\vspace{0.3cm}
+		$\mu^*(A) \le \sum_{k=1}^{\infty} \mu^*(A_k) + \varepsilon$. \\ \vspace{0.3cm}
+		Since this holds for any $\varepsilon > 0$, it also holds for $\varepsilon = 0$, which completes the proof. $\blacksquare$
+	\end{block}
+\end{frame}
+
+
+
+\begin{frame}{Outer Measure}
+	\begin{block}{From Outer Measure to Measurable Sets}
+		Outer measure $\mu^*$ assigns a “size” to any set $E \subset \mathbb{R}$. \\
+		
+		\vspace{0.5cm}
+		
+		But not all sets behave nicely under $\mu^*$. \\
+		
+		\vspace{0.5cm}
+		
+		For example, we want additivity: splitting a set shouldn’t change total size.
+	\end{block}
+\end{frame}
+
+
+\begin{frame}{Symmetric Difference}
+	\begin{block}{Definition}
+		The symmetric difference of two sets $A, B \subset \Omega$ is the set $A \triangle B := (A \setminus B) \cup (B \setminus A) = (A \cup B) \setminus (A \cap B)$
+		
+		\begin{itemize}
+			\item Clearly, $A \triangle B = B \triangle A$
+			\item Also, $x \in A \triangle B$ if and only if $x$ belongs to exactly one of the sets $A, B$. That is, either $x \in A$ and $x \notin B$ or $ x \notin A$ and $ x \in B$.
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}{Symmetric Difference}
+	%\begin{block}{Lemma $1.6 (a)$}
+		%For arbitrary sets $A_1,A_2, B_1, B_2 \subset \Omega$, \\ \vspace{0.15cm}
+		%$(A_1 \circ A_2) \triangle (B_1 \circ B_2) \subset (A_1 \triangle B_1) \cup (A_2 \triangle B_2)$, \\ \vspace{0.15cm}
+		%where $\circ$ denotes any of the operations $\cup, \cap, \setminus.%
+	%\end{block}
+	%
+	%\vspace{1cm}
+	
+	\begin{block}{Lemma }
+		If $\mu^*$ is an outer measure on $\Omega$, then 
+		$| \mu^*(A) - \mu^*(B)| \leq \mu^*(A \triangle B)$, \\
+		for arbitrary sets $A, B \subset \Omega$.
+	\end{block}
+\end{frame}
+
+
+\begin{frame}{Outer Measure}
+\begin{block}{Proof of Lemma}
+		Note that
+		\[
+		A \subset B \cup (A \setminus B) \subset B \cup (A \triangle B)
+		\]
+		where by the subadditivity of $\mu^*$
+		\[
+		\mu^*(A) \le \mu^*(B) + \mu^*(A \triangle B),
+		\]
+		where
+		\[
+		\mu^*(A) - \mu^*(B) \le \mu^*(A \triangle B).
+		\]
+		
+		Switching $A$ and $B$, we obtain a similar estimate:
+		\[
+		\mu^*(B) - \mu^*(A) \le \mu^*(A \triangle B),
+		\]
+		hence the inequality in the Lemma follows.
+\end{block}
+	\end{frame}
+	
+
+\begin{frame}{Measurable Sets}
+	We still consider $\mathcal{A}$ to be an algebra on $\Omega$ and $\mu$ is a $\sigma$-additive measure on $\mathcal{A}$, while holding the definition of $\mu^*$.
+	
+	\begin{block}{Definition of Measurable sets}
+		A set $A \subset \Omega$ is called measurable (with respect to the algebra $\mathcal{A}$ and the measure $\mu$) if, for any $\varepsilon > 0$, there exist $B \in \mathcal{A}$ such that \\ $\mu^*(A \triangle B) < \varepsilon$. 
+	\end{block}
+	\medskip
+	
+	In other words, set $A$ is measurable if it can be approximated by sets from $\mathcal{A}$ arbitrarily closely.
+	
+\end{frame}
+
+
+
+\begin{frame}{Measurable Sets}
+	\begin{block}{Alternative Definition of Measurable Sets}
+		Let $\mu^*$ be an outer measure on a set $\Omega$.  
+		A subset $E \subset \Omega$ is called \textbf{measurable} (with respect to $\mu^*$) if for every subset $A \subseteq \Omega$:
+		\[
+		\mu^*(A) = \mu^*(A \cap E) + \mu^*(A \cap E^c)
+		\]
+		where $E^c = \Omega \setminus E$ is the complement of $E$.
+	\end{block}
+	
+	\vspace{0.5cm}
+	It essentially says that $E$ splits any set $A$ 'nicely' with respect to outer measure.
+	
+\end{frame}
+
+
+
+\begin{frame}{Measurable sets}
+	\begin{block}{Examples of measurable sets}
+		\begin{enumerate}
+			\item Intervals in the real line. i.e. $(a, b), [a, b), [a,b], (-\infty, a), \text{or} (b, +\infty)$. \vspace{0.5cm}
+			\item Finite sets and countable sets. i.e. $\{a, b, c\}, \mathbb{N}, \mathbb{Q}, $ etc. \vspace{0.5cm}
+			\item Complements of measurable sets. i.e. $\mathbb{R} \setminus \mathbb{Q}$, etc
+		\end{enumerate}
+	\end{block}
+\end{frame}
+
+
+\begin{frame}{Measurable sets}
+	\begin{block}{}
+		Are all sets Measurable? Why?
+	\end{block}	
+	\centering
+	\includegraphics[width=0.7\textwidth]{rule2.jpg}
+\end{frame}
+
+
+\begin{frame}{Stefan Banach -- Polish Mathematician}
+	\begin{figure}
+		\centering
+		\includegraphics[width=1\textwidth]{Banach.jpg}
+		\caption{Stefan Banach}
+	\end{figure}
+\end{frame}
+
+
+\begin{frame}{Alfred Tarski -- Polish-American Mathematician}
+	\begin{figure}
+		\centering
+		\includegraphics[width=1\textwidth]{Tarski1.jpg}
+		\caption{Alfred Tarski}
+	\end{figure}
+\end{frame}
+
+
+\begin{frame}{Giuseppe Vitali -- Italian Mathematician}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.75\textwidth]{Vitali1.jpg}
+		\caption{Giuseppe Vitali}
+	\end{figure}
+\end{frame}
+
+
+\begin{frame}{Non-Measurable sets}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.9\textwidth]{non-measurable.png} % or .png
+		\caption{examples of non-measurable sets.}
+		\label{fig:non-measurable sets}
+	\end{figure}
+\end{frame}
+
+
+\begin{frame}{Axiom of Choice \textbf{(AC)}}
+	\begin{block}{Formal Statement}
+		The \textbf{axiom of choice (AC)} asserts that for any family of nonempty sets $\{S_i\}_{i \in I}$, there exists a function $f$ (called a \textit{choice function}) such that
+		
+		
+		\[
+		f(i) \in S_i \quad \text{for each } i \in I.
+		\]
+		
+		
+	\end{block}
+	
+	\begin{block}{Simpler Terms}
+		You can always pick one element from each set, even if there are infinitely many sets and no explicit rule for choosing.
+		
+		\begin{exampleblock}{}
+			It is needed because it guarantees selections from infinite families of sets. However, it is controversial and thus leads to paradoxical results like the Banach–Tarski paradox (a ball can be split and reassembled into two identical balls).
+		\end{exampleblock}
+	\end{block}
+\end{frame}
+
+
+\begin{frame}{Illustrative Examples of Non-Measurable Sets }
+	
+	\textbf{Vitali set ($\mathbb{R}$):}  
+	\begin{itemize}
+		\item Consider all real numbers between 0 and 1.
+		\item Partition them into equivalence classes where numbers differ by a rational number.
+		\item Pick one number from each class.
+		\item The resulting set is the Vitali set.
+		\item You cannot assign a consistent length to it, even though each piece “looks like a number.”
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Banach–Tarski paradox (3D):}  
+	\begin{itemize}
+		\item Start with a solid 3D ball (like a basketball).
+		\item Using very strange, non-physical pieces, it is possible to cut it into finitely many pieces and reassemble them into two balls of the same size.
+		\item Each piece is non-measurable, meaning no volume can be consistently assigned.
+	\end{itemize}
+	
+\end{frame}
+
+
+\begin{frame}{Assignment}
+	Illustrate the non-measurable Bernstein set of real numbers.
+\end{frame}
+
+
+
+\begin{frame}{Theorem } 
+\begin{block}{Carathéodory's extension theorem}
+	Let $\mathcal{A}$ be an algebra on a set $\Omega$ and $\mu$ be a $\sigma$-additive measure on $\mathcal{A}$. Denote by $\mathcal{M}$ the family of all measurable subsets of $\Omega$. Then the following is true:
+	
+	\begin{enumerate}
+		\item $\mathcal{M}$ is a $\sigma$-algebra containing $\mathcal{A}$.
+		\item The restriction of $\mu^*$ on $\mathcal{M}$ is a $\sigma$-additive measure (that extends measure $\mu$ from $\mathcal{A}$ to $\mathcal{M}$).
+		\item If $\tilde{\mu}$ is a $\sigma$-additive measure defined on a $\sigma$-algebra $\mathcal{F}$ such that $\mathcal{A} \subset \mathcal{F} \subset \mathcal{M}$, then $\tilde{\mu} = \mu^*$ on $\mathcal{M}$.
+	\end{enumerate}
+\end{block}
+
+\vspace{0.3cm}
+From this theorem, we can make the following claims.
+\end{frame}
+
+
+
+\begin{frame}{Claims on Caratheodory's Extension Theorem}
+	Claim 1: \textit{The family $\Omega$ of all measurable sets is an algebra containing $\mathcal{A}$.}
+	
+	\begin{itemize}
+		\item If $A \in \mathcal{A}$, then $A$ is measurable because:
+		
+		
+		\[
+		\mu^*(A \triangle A) = \mu^*(\emptyset) = \mu(\emptyset) = 0,
+		\]
+		
+		where $\mu^*(\emptyset) = \mu(\emptyset)$.
+		\item Hence, $\mathcal{A} \subset \Omega$ and the entire space $\Omega$ is a measurable set. 
+	\end{itemize}
+	
+	\textbf{To verify $\mathcal{M}$ is an algebra:} Show that for $A_1,A_2 \in \mathcal{M}$, both $A_1 \cup A_2$ and $A_1 \setminus A_2$ are measurable.
+	
+	\begin{itemize}
+		\item Let $A = A_1 \cup A_2$. For any $\varepsilon > 0$, there exist $B_1, B_2 \in \mathcal{A}$ such that
+		
+		
+		\[
+		\mu^*(A_1 \triangle B_1) < \varepsilon 
+		\quad \text{and} \quad 
+		\mu^*(A_2 \triangle B_2) < \varepsilon. \dots (1.19)
+		\]
+		
+		
+		\item Set $B = B_1 \cup B_2 \in \mathcal{A}$.
+		
+	\end{itemize}
+	
+\end{frame}
+
+
+\begin{frame}{Proof}
+	\begin{itemize}
+		\item Then by the symmetric difference Lemma and the subadditivity of $\mu^*$ respectively, we have 
+		\begin{equation*}
+			A \triangle B \subset (A_1 \triangle B_1) \cup (A_2 \triangle B_2)
+		\end{equation*} and 
+		\begin{equation*}
+			\mu^*(A \triangle B) \le \mu^*(A_1 \triangle B_1) + \mu^*(A_2 \triangle B_2) < 2\varepsilon \dots (1.20)
+		\end{equation*}
+		\item Since $\varepsilon>0$ is arbitrary and $B \in \mathcal{A}$, then $A$ is measurable. Similarly, $A_1 \setminus A_2 \in \mathcal{M}$.
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Caratheodory Extension Theorem Proofs}
+	Claim 2: 	\(\mu^*\) is \(\sigma\)-additive on \(\mathcal{M}\).  \\
+	\vspace{0.3cm}
+	
+	Since \(\mathcal{M}\) is an algebra and \(\mu^*\) is \(\sigma\)-subadditive, it suffices to prove that \(\mu^*\) is finitely additive on \(\mathcal{M}\).  
+	
+	Let us prove that, for any two disjoint measurable sets \(A_1\) and \(A_2\), we have
+	\[
+	\mu^*(A) = \mu^*(A_1) + \mu^*(A_2)
+	\]
+	where \(A = A_1 \cup A_2\). Then we have the inequality
+	\[
+	\mu^*(A) \le \mu^*(A_1) + \mu^*(A_2)
+	\]
+	so that we are left to prove the opposite inequality
+	\[
+	\mu^*(A) \ge \mu^*(A_1) + \mu^*(A_2).
+	\]
+	
+	
+\end{frame}
+
+
+\begin{frame}{Proof}
+	For any $\varepsilon > 0$, there are sets $B_1, B_2 \in \mathcal{A}$ such that
+	
+	
+	\[
+	\mu^*(A_1 \triangle B_1) < \varepsilon 
+	\quad \text{and} \quad 
+	\mu^*(A_2 \triangle B_2) < \varepsilon.
+	\]
+	
+	
+	\vspace{0.25cm}
+	Set $B = B_1 \cup B_2 \in \mathcal{A}$. Then
+	
+	
+	\[
+	\mu^*(A \triangle B) \le \mu^*(A_1 \triangle B_1) + \mu^*(A_2 \triangle B_2) < 2\varepsilon,
+	\]
+	where $A = A_1 \cup A_2$. In particular,
+	\[
+	|\mu^*(A) - \mu^*(B)| \le \mu^*(A \triangle B) < 2\varepsilon.
+	\]
+
+	\vspace{0.25cm}
+	On the other hand, since $B \in \mathcal{A}$, we have
+	
+	\[
+	\mu^*(B) = \mu(B) = \mu(B_1 \cup B_2) = \mu(B_1) + \mu(B_2) - \mu(B_1 \cap B_2).
+	\]
+	
+\end{frame}
+
+
+\begin{frame}{Proof}
+	Next, we estimate $\mu(B_i)$ from below via $\mu^*(A_i)$ and show that $\mu(B_1 \cap B_2)$ is small enough.  
+	
+	Indeed, for any $i = 1,2$, we have
+	
+	
+	\[
+	|\mu^*(A_i) - \mu^*(B_i)| \le \mu^*(A_i \triangle B_i) < \varepsilon,
+	\]
+	
+	
+	whence
+	
+	
+	\[
+	\mu(B_1) \ge \mu^*(A_1) - \varepsilon \quad \text{and} \quad \mu(B_2) \ge \mu^*(A_2) - \varepsilon.
+	\]
+	
+	On the other hand, if $A_1 \cap A_2 = \emptyset$, then
+	
+	\[
+	B_1 \cap B_2 \subset (A_1 \triangle B_1) \cup (A_2 \triangle B_2),
+	\]
+	
+	so
+	
+	\[
+	\mu(B_1 \cap B_2) \le \mu^*(A_1 \triangle B_1) + \mu^*(A_2 \triangle B_2) < 2\varepsilon.
+	\]
+\end{frame}
+
+
+\begin{frame}{Proof}
+	It follows that
+	
+	\[
+	\mu^*(A) \ge (\mu^*(A_1) - \varepsilon) + (\mu^*(A_2) - \varepsilon) - 2\varepsilon - 2\varepsilon 
+	= \mu^*(A_1) + \mu^*(A_2) - 6\varepsilon.
+	\]
+	Letting $\varepsilon \to 0$, we finish the proof.
+\end{frame}
+
+\begin{frame}{Applicability of Carathéodory’s Extension Theorem}
+	\begin{block}{Constructing Lebesgue Measure}
+		\begin{itemize}
+			\item Start with the length function defined on intervals of $\mathbb{R}$.
+			\item Apply Carathéodory’s theorem to extend this pre-measure to the $\sigma$-algebra of Lebesgue measurable sets.
+			\item This gives us the rigorous foundation of integration.
+		\end{itemize}
+	\end{block}
+	
+	\begin{block}{Probability Measures}
+		\begin{itemize}
+			\item Define probabilities on an algebra of “simple events” (like finite unions of intervals).
+			\item Extend to the $\sigma$-algebra of Borel sets, ensuring random variables and distributions are well-defined.
+			\item Example: Extending the uniform distribution from intervals in $[0,1]$ to all Borel subsets.
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}{Reading Assignment}
+	\Large
+	Read on the following applicability of Caratheordory's Extension Theorem
+	\vspace{0.5cm}
+	\begin{enumerate}
+		\item Product Measures
+		\item Outer Measure and Measurability
+		\item Abstract Measure Spaces
+	\end{enumerate}
+\end{frame}
+
+
+
+\begin{frame}{Group Assignment}
+	\Large Prove the following claims: \\
+	\begin{enumerate}
+		\item $\mathcal{M}$ is $\sigma$-algebra
+		\vspace{1cm}
+		\item If \(\mathcal{F}\) is a \(\sigma\)-algebra such that
+		\[
+		\mathcal{A} \subset \mathcal{F} \subset \mathcal{M},
+		\]
+		and \(\tilde{\mu}\) is a \(\sigma\)-additive measure on \(\Sigma\) such that \(\tilde{\mu} = \mu\) on \(\mathcal{A}\). Then \(\tilde{\mu} = \mu^*\) on \(\mathcal{F}\).  
+		
+		Prove that
+		\[
+		\tilde{\mu}(A) = \mu^*(A) \quad \text{for any } A \in \mathcal{F}.
+		\]
+		
+	\end{enumerate}
+\end{frame}
+
+
+\begin{frame}{References}
+	\begin{thebibliography}{99}
+		
+		\bibitem{grigoryan}
+		A. Grigoryan,
+		\textit{Measure Theory and Probability},
+		University of Bielefeld, Lecture Notes.
+		
+		\bibitem{athreya}
+		K. B. Athreya and S. N. Lahiri,
+		\textit{Measure and Probability Theory},
+		Springer, 2006.
+		
+		\bibitem{billingsley}
+		P. Billingsley,
+		\textit{Probability and Measure},
+		3rd ed., Wiley, 1995.
+		
+		\bibitem{youtube}
+		A Probability Space,
+		\textit{Measure Theory and Probability},
+		YouTube lecture series, 2023.\\
+		Link: \url{https://youtu.be/swa1VRYms3Q}
+	\end{thebibliography}
+
+\end{frame}
+
+
+\end{document}
